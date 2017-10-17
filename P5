@@ -1,0 +1,62 @@
+/* 
+计算一个给定字符串废的最大回文子字符串
+*/
+#include<stdio.h>
+#include<string.h>
+
+char* longestPalindrome(char*);
+int main(void)
+{
+	char * s;
+	char st[1001];
+	printf("请输入一个长度不超过1000的字符串：\n");
+	s = gets(st);
+	printf("属于字符串\"%s\"的最大长度的回文子字符串为：\n",s);
+	puts(longestPalindrome(s));
+	return 0;
+}
+char* longestPalindrome(char* s) {
+	int begin = 0;
+	int end = 0;
+	int lenth = 1;
+	int panduan = 0;
+	for (int i = 0; i < strlen(s); i++)
+	{
+		for (int n = (strlen(s) - 1); n > i; n--)
+		{
+			if (s[i] == s[n])
+			{
+				int a = i;
+				int b = n;
+				while (b - a > 1)
+				{
+					if (s[++a] != s[--b])
+					{
+						panduan = 1;
+						break;
+					}
+				}
+
+				
+				if ((n - i + 1) > lenth && panduan == 0)
+				{
+					begin = i;
+					end = n;
+					lenth = n - i + 1;
+				}
+				panduan = 0;
+			}
+			if ((n - i + 1) < lenth)
+				break;
+		}
+		if (strlen(s) - i + 1 < lenth)
+			break;
+	}
+	char * r;
+	int y = 0;
+	r = (char *)malloc(lenth * sizeof(char) + 1);
+	for (int x = begin; x <= end; x++)
+		r[y++] = s[x];
+	r[y] = '\0';
+	return r;
+}
