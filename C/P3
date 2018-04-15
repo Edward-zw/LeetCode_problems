@@ -1,0 +1,18 @@
+int lengthOfLongestSubstring(char* s) {
+    int hash[128] = {0};    //
+    int repeat_pos=0;
+    int index;
+    int ans=0;
+    int length = 0;
+    while (s[length] != '\0')
+    {
+        index = s[length];
+        if(hash[index] > repeat_pos)
+            repeat_pos = hash[index];
+        if(length + 1 - repeat_pos > ans)
+            ans++;
+        hash[index] = length + 1;
+        length++;
+    }
+    return ans;
+}
