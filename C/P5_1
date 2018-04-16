@@ -1,0 +1,61 @@
+char* longestPalindrome(char* s) {
+	int IsPalindromic(char *s, int head, int tail);
+	int length = 0;
+	int max = 0;
+	int begin, end;
+	while (s[length] != '\0')
+		length++;
+
+	int i = 0, j;
+	while (s[i] != '\0')
+	{
+		for (j = length - 1; j >= i; j--)
+		{
+			if (s[i] != s[j])
+				continue;
+			else
+			{
+				if (IsPalindromic(s, i, j))
+				{
+					if ((j - i + 1) > max)
+					{
+						max = j - i + 1;
+						begin = i;
+						end = j;
+					}
+					break;
+				}
+				else
+					continue;
+			}
+		}
+		i++;
+	}
+	//printf("%d  %d\n", begin, end);
+	char *maxpalindromic;
+    maxpalindromic = (char *)malloc((max+1) * sizeof(char));
+    char *ans;
+    ans = maxpalindromic;
+	int k;
+	for (k = 0; k < max; k++)
+	{
+		maxpalindromic[k] = s[begin++];
+	}
+	maxpalindromic[k] = '\0';
+
+	return ans;
+}
+
+
+int IsPalindromic(char *s, int head, int tail)
+{
+	while (head <= tail && s[head] == s[tail])
+	{
+		head++;
+		tail--;
+	}
+	if (head >= tail)
+		return 1;
+	else
+		return 0;
+}
