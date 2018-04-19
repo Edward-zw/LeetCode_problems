@@ -1,0 +1,44 @@
+int myAtoi(char* s) {
+	int i = 0;
+	while (s[i] == ' ')      //discard whitespace characters
+		i++;
+
+	int Isdigit[128];
+	int j;
+	for (j = 0; j<128; j++)
+		Isdigit[j] = -1;
+	Isdigit[43] = -2;       //the character is '+' whose ascii is 43
+	Isdigit[45] = -3;       //the character is '1'
+	for (j = 48; j <= 57; j++)
+		Isdigit[j] = j - 48;
+
+	if (Isdigit[s[i]] == -1)
+		return 0;
+
+	int negative = 0;
+	if (Isdigit[s[i]] == -3)
+	{
+		negative = 1;
+		i++;
+	}
+
+	else if (Isdigit[s[i]] == -2)
+		i++;
+
+	long int ans = 0;
+	//printf("%d", Isdigit[s[i]]);
+	while (0 <= Isdigit[s[i]] && Isdigit[s[i]] <= 9)
+	{
+		ans = ans * 10 + Isdigit[s[i]];
+		if (negative == 0 && ans > INT_MAX)
+			return INT_MAX;
+		if (negative == 1 && -ans < INT_MIN)
+			return INT_MIN;
+		i++;
+	}
+	if (negative == 1)
+		return -ans;
+	else
+		return ans;
+	return 0;
+}
