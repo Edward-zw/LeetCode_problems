@@ -1,0 +1,27 @@
+bool isMatch(char* s, char* p) {
+    int lenS = strlen(s);
+    int lenT = strlen(p);
+    bool **table = malloc(sizeof(bool*) * (lenS+1));
+    for (int i = 0; i <= lenS; i++) {
+        table[i] = malloc(sizeof(bool) * (lenT+1));
+        for (int j = 0; j <= lenT; j++) {
+            table[i][j] = false;
+        }
+    }
+    
+    table[0][0] = true;
+    for (int j = 1; j <= lenT; j ++) { // only if p[j-1] == * && 
+        table[0][j] = (j> 1 &&p[j-1] == '*' && table[0][j-2]);
+    }
+    
+    for (int i = 1; i <= lenS; i++) {
+        for (int j = 1; j <= lenT; j++) {
+            if (p[j-1] != '*') {
+                table[i][j] = table[i-1][j-1] && (s[i-1] == p[j-1] || p[j-1] == '.');
+            } else {
+                table[i][j] = table[i][j-2] || ((s[i-1] == p[j-2] || p[j-2] =='.') && table[i-1][j]);
+            }
+        }
+    }
+    return table[lenS][lenT];
+}
