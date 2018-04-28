@@ -1,0 +1,50 @@
+/*
+*********************Longest Common Prefix************************
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+Input: ["flower","flow","flight"]
+Output: "fl"
+
+Example 2:
+Input: ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
+Note:
+All given inputs are in lowercase letters a-z.
+*/
+
+char* longestCommonPrefix(char** strs, int strsSize) {
+    int i;
+    int minsize = INT_MAX;
+    if(strsSize == 0)       //if strs is empty, then return "".
+        return "";
+    for(i=0;i<strsSize;i++) //find the length of the longest prefix
+    {
+        if(strlen(strs[i]) < minsize)
+            minsize = strlen(strs[i]);
+    }
+    
+    char *prefix;
+    prefix = (char *)malloc((minsize+1)*sizeof(char));  //the array of prefix
+    for(i=0;i<minsize;i++)
+    {
+        int j = 0;
+        char prfix_tmp;
+        prfix_tmp = strs[j][i];
+        while(j < strsSize && strs[j][i] == prfix_tmp)      //Determine if a character is common
+        {
+            j++;
+        }
+        if(j == strsSize)
+            prefix[i] = prfix_tmp;
+        else 
+            break;   
+    }
+    prefix[i] = '\0';
+    return prefix;
+    
+}
