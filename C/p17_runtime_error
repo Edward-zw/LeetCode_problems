@@ -1,0 +1,79 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** combination(char* digits, char buttons[10][5], int start, int end, int* length)
+{
+    int digit,i,digitsSize;
+    char** ans;     //answer
+    digitsSize = end - start + 1;
+    if(digitsSize == 1)
+    {
+        digit = digits[0] - 48;         //convert chacater to int
+        if(digit == 0 || digit == 1)    //determine the size of the array
+            *length = 0;
+        else
+        {
+            if(digit == 7 || digit == 9)
+                *length = 4;
+            else
+                *length = 3;
+        }
+        ans = (char**)malloc(sizeof(char*)*(*length));
+        for(i = 0;i < (*length); i++)
+        {
+            ans[i] = (char*)malloc(sizeof(char)*(digitsSize+1));
+            ans[i][0] = buttons[digit][i];
+            ans[i][1] = '\0';
+        }
+        return ans; 
+    }
+    // the length of digits greater than 1
+    char** tmp;
+    int j;
+    int k = 0;
+    tmp = combination(digits, buttons,start, end-1, length);
+    digit = digits[end-1] - 48;
+    int length_tmp = *length;
+    if(digit == 0 || digit == 1)
+        *length *= 0;
+    else
+    {
+        if(digit == 7 || digit == 9)
+            *length *= 4;
+        else
+            *length *= 3;
+    }
+    ans = (char**)malloc(sizeof(char*)*(*length));
+    for(i = 0;i < (*length); i++)
+        ans[i] = (char*)malloc(sizeof(char)*(digitsSize+1));
+    
+    for(i = 0; i < length_tmp; i++)
+    {
+        j = 0;
+        while(buttons[digit][j] != '\0')
+        {
+            ans[k] = strcat(ans[k],tmp[i]);
+            ans[k][digitsSize - 1] = buttons[digit][j];
+            ans[k][digitsSize] = '\0';
+            k++;
+            j++;
+        }
+    }
+    //free(tmp);
+    return ans;
+}
+
+char** letterCombinations(char* digits, int* returnSize) {
+    char buttons[10][5]={"", "", "abc", "def", "ghi", "jkl", "mno","pqrs", "tuv", "wxyz"};
+    char** ans;
+    int length = 0;
+    int digitsSize = strlen(digits);
+    if(digitsSize == 0)
+        return "";
+    ans = combination(digits,buttons,1,digitsSize,&length);
+    *returnSize = length;
+    return ans;
+    
+    
+}
