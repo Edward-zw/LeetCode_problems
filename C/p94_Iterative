@@ -1,0 +1,76 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+typedef struct TreeNode* position;
+typedef position* stack;
+
+int TreeHeight(struct TreeNode* root)
+{
+    int a, b;
+    if(root == NULL)
+        return 0;
+    a = TreeHeight(root->left);
+    b = TreeHeight(root->right);
+    return a + b + 1;
+}
+
+void push(struct TreeNode* t, stack s, int* stackSize)
+{
+    s[*stackSize] = t;
+    (*stackSize) += 1;
+}
+
+struct TreeNode* pop(stack s, int* stackSize)
+{
+    (*stackSize) -= 1;
+    return s[*stackSize];
+}
+
+void pushleft(struct TreeNode* root, stack s, int* stackSize)
+{
+    position t;
+    t = root;
+    if(root == NULL)
+        return ;
+    while(t)
+    {
+        push(t,s,stackSize);
+        t = t->left;
+    }
+}
+
+
+int* inorderTraversal(struct TreeNode* root, int* returnSize) {
+    int length = TreeHeight(root);
+    stack s;
+    int* a;
+    a = (int *)malloc(sizeof(int) * length);
+    s = (stack)malloc(sizeof(struct TreeNode *) * length);
+    *returnSize = 0;
+    int *stackSize;
+    stackSize = (int *)malloc(sizeof(int));
+    (*stackSize) = 0;
+    struct TreeNode *tmpcell;
+    pushleft(root, s, stackSize);
+    while(*stackSize > 0)
+    {
+        tmpcell = pop(s, stackSize);
+        a[*returnSize] = tmpcell->val;
+        *returnSize += 1;
+        if(tmpcell->right != NULL)
+            pushleft(tmpcell->right,s,stackSize);    
+    }
+    
+    //*returnSize = *stackSize;
+    return a;
+    
+}
